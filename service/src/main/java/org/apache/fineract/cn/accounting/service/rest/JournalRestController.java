@@ -93,7 +93,7 @@ public class JournalRestController {
             throw ServiceException.conflict("Debtor account{0} must be in state open.", debtor.getAccountNumber());
           }
         })
-        .map(debtor -> BigDecimal.valueOf(debtor.getAmount()))
+        .map(debtor -> new BigDecimal(debtor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
     final BigDecimal creditorAmountSum = journalEntry.getCreditors()
@@ -107,7 +107,7 @@ public class JournalRestController {
             throw ServiceException.conflict("Creditor account{0} must be in state open.", creditor.getAccountNumber());
           }
         })
-        .map(creditor -> BigDecimal.valueOf(creditor.getAmount()))
+        .map(creditor -> new BigDecimal(creditor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
     if (!(debtorAmountSum.compareTo(creditorAmountSum) == 0)) {
