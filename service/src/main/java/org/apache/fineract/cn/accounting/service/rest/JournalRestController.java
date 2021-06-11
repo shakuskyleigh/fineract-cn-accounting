@@ -82,7 +82,7 @@ public class JournalRestController {
       throw ServiceException.badRequest("Creditors must be given.");
     }
 
-    final Double debtorAmountSum = journalEntry.getDebtors()
+    final BigDecimal debtorAmountSum = journalEntry.getDebtors()
         .stream()
         .peek(debtor -> {
           final Optional<Account> accountOptional = this.accountService.findAccount(debtor.getAccountNumber());
@@ -93,10 +93,10 @@ public class JournalRestController {
             throw ServiceException.conflict("Debtor account{0} must be in state open.", debtor.getAccountNumber());
           }
         })
-        .map(debtor -> Double.valueOf(debtor.getAmount()))
+        .map(debtor -> BigDecimal.valueOf(debtor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
-    final Double creditorAmountSum = journalEntry.getCreditors()
+    final BigDecimal creditorAmountSum = journalEntry.getCreditors()
         .stream()
         .peek(creditor -> {
           final Optional<Account> accountOptional = this.accountService.findAccount(creditor.getAccountNumber());
@@ -107,10 +107,10 @@ public class JournalRestController {
             throw ServiceException.conflict("Creditor account{0} must be in state open.", creditor.getAccountNumber());
           }
         })
-        .map(creditor -> Double.valueOf(creditor.getAmount()))
+        .map(creditor -> BigDecimal.valueOf(creditor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
-    if (debtorAmountSum != creditorAmountSum) {
+    if (!(debtorAmountSum.compareTo(creditorAmountSum) == 0)) {
       throw ServiceException.conflict(
           "Sum of debtor {0} and sum of creditor {1} amounts must be equals.",debtorAmountSum,creditorAmountSum);
     }
