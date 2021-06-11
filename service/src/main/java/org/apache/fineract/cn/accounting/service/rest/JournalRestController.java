@@ -112,7 +112,7 @@ public class JournalRestController {
 
     if (debtorAmountSum != creditorAmountSum) {
       throw ServiceException.conflict(
-          "Sum of debtor and sum of creditor amounts must be equals.");
+          "Sum of debtor {0} and sum of creditor {1} amounts must be equals.",debtorAmountSum,creditorAmountSum);
     }
 
     this.commandGateway.process(new CreateJournalEntryCommand(journalEntry));
