@@ -110,7 +110,7 @@ public class JournalRestController {
         .map(creditor -> Double.valueOf(creditor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
-    if (!debtorAmountSum.equals(creditorAmountSum)) {
+    if (debtorAmountSum != creditorAmountSum) {
       throw ServiceException.conflict(
           "Sum of debtor and sum of creditor amounts must be equals.");
     }
