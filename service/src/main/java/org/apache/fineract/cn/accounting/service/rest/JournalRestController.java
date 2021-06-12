@@ -93,7 +93,7 @@ public class JournalRestController {
             throw ServiceException.conflict("Debtor account{0} must be in state open.", debtor.getAccountNumber());
           }
         })
-        .map(debtor -> Double.valueOf(debtor.getAmount()))
+        .map(debtor -> Double.parseDouble(debtor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
     final Double creditorAmountSum = journalEntry.getCreditors()
@@ -107,10 +107,10 @@ public class JournalRestController {
             throw ServiceException.conflict("Creditor account{0} must be in state open.", creditor.getAccountNumber());
           }
         })
-        .map(creditor -> Double.valueOf(creditor.getAmount()))
+        .map(creditor -> Double.parseDouble(creditor.getAmount()))
         .reduce(0.0D, (x, y) -> x + y);
 
-    if (!(debtorAmountSum.compareTo(creditorAmountSum) == 0)) {
+    if (debtorAmountSum.compareTo(creditorAmountSum) != 0) {
       throw ServiceException.conflict(
           "Sum of debtor {0} and sum of creditor {1} amounts must be equals.",debtorAmountSum,creditorAmountSum);
     }
