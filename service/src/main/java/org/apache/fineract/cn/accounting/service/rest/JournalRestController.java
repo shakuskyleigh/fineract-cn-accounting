@@ -113,9 +113,9 @@ public class JournalRestController {
         final BigDecimal debtor = BigDecimal.valueOf(debtorAmountSum);
         final BigDecimal creditor = BigDecimal.valueOf(creditorAmountSum);
 
-        final Int res = debtorAmountSum.compareTo(creditorAmountSum);
-        final Int bigD = debtor.compareTo(creditor);
-        
+        final Integer res = debtorAmountSum.compareTo(creditorAmountSum);
+        final Integer bigD = debtor.compareTo(creditor);
+
     if (res != 0) {
       throw ServiceException.conflict(
           "Sum of debtor {0} and sum of creditor {1} amounts must be equals.{2} -> {3}",debtorAmountSum,creditorAmountSum,res,bigD);
